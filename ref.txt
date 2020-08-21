@@ -1,0 +1,54 @@
+Body Parser
+
+const bodyParser = require('body-parser');
+
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+app.use(bodyParser.json());
+
+
+app.post('/',urlencodedParser, (req,res) => {
+    console.log('Data on Post : '+ req.body.name);
+    res.status(200).send({"Name" : req.body.name});
+});
+
+
+=========================================================================
+Mysql
+
+
+var mysql= require('mysql');
+
+var con=mysql.createConnection({
+    host: "localhost",
+  user: "root",
+  password: "",
+  database: "employee"
+
+});
+
+con.connect(function(err){
+if(err) throw err;
+console.log('database connected successfully');
+});
+
+
+MySql Read
+
+var getQuery="select * from `users`";
+    con.query(getQuery,function(err,result){   
+       if(err) throw err;
+       res.render('index', { title: 'Employee Records', records:result,success:'' });    
+    });
+
+
+MySql Add Data
+
+  var insertQuery='insert into `users` (`name`,`email`,`etype`,`hourlyrate`,`totalhour`,`total`) VALUES (?,?,?,?,?,?)';
+  var query=mysql.format(insertQuery,[name,email,etype,hourlyrate,totalHour,total]);
+  con.query(query,function(err,response){
+      if(err) throw err;
+     // console.log(response.insertId);
+
+
+});
