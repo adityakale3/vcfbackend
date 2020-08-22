@@ -1,36 +1,35 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 // Fetch Social Profile
-router.get('/:username', (req,res) => {
-    // Get Username
-    var username = req.params.username;
+router.get("/:username", (req, res) => {
+  // Get Username
+  var username = req.params.username;
 
-    // Validate Username
+  // Validate Username
 
-    // Fetch Response
+  // Fetch Response
 
-    // Send Response
+  // Send Response
 
-    res.send(`Hi ${username}`);
+  res.send(`Hi 😃 ${username}`);
 });
 
 // Fetch Private Profile
-router.get('/:username/:privateKey', (req,res) => {
-    // Get Username
-    var username = req.params.username;
-    var privateKey = req.params.privateKey;
+router.get("/:username/:privateKey", (req, res) => {
+  // Get Username
+  var username = req.params.username;
+  var privateKey = req.params.privateKey;
 
-    // Validate Username
+  // Validate Username
 
-    // Validate PrivateKey
+  // Validate PrivateKey
 
-    // Fetch Response
+  // Fetch Response
 
-    // Send Response
+  // Send Response
 
-    res.send(`${username} is private user`);
+  res.send(`${username} is private user`);
 });
-
 
 module.exports = router;
