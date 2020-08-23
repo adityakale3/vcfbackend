@@ -1,0 +1,3 @@
+ERR - 100 : Signup | error connecting database for checking of user existance
+ERR - 101 : Signup | error connecting database for creating new user
+ERR - 200 : Login  | error connecting database for creating new user

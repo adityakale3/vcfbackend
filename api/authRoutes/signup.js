@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 router.post(
   "/signup",
   [
+    // Check username for not empty | username between 6 - 50
     body("username")
       .trim()
       .not()
@@ -16,12 +17,15 @@ router.post(
       .withMessage("Username is required")
       .isLength({ min: 6, max: 50 })
       .withMessage("Username Length must be Between 6 - 50"),
+    // Check email not empty | less than 100
     body("email", "Email is required")
       .trim()
       .isEmail()
       .not()
       .isEmpty()
-      .withMessage("Email is required"),
+      .withMessage("Email is required")
+      .isLength({ max: 100 }),
+    // Check password not empty | Between 8 - 50 | equals confirm_password
     body("password", "Password is requried")
       .trim()
       .not()
@@ -35,6 +39,7 @@ router.post(
           return true;
         }
       }),
+    // Check confirm_password | equals password
     body("cpassword", "Confirm Password is requried")
       .trim()
       .not()
@@ -51,10 +56,12 @@ router.post(
     // get Validator errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      //
+      //  Response input values error
+      //
       res.json({
-        title: "Login",
-        message: `Error during Login`,
-        error: errors.mapped(),
+        err: true,
+        msg: errors.mapped(),
       });
     } else {
       // Get sanitized user Data into variables
@@ -69,19 +76,25 @@ router.post(
 
       con.query(checkUserinDB, (err, result) => {
         if (err) {
-          // error checking user in db
-          res.json({ err: true, msg: err });
+          //
+          //  Response // error checking user in db
+          //
+          res.json({ err: true, msg: "Connectivity Issue ERR - 100" });
         } else {
           // User query run successfully
 
           // checking users existance
           if (result.length) {
-            res.json({ msg: "Email or username already exists" });
+            //
+            //  Response // users existance in db Duplicate entry
+            //
+            res.json({ err: true, msg: "Email or username already exists" });
           } else {
             // No similar user found, code to add new user
 
             // BCRYPT PASSWORD
-            bcrypt.hash(password, 10, function (err, hash) {
+            const salt = bcrypt.genSaltSync(10);
+            bcrypt.hash(password, salt, function (err, hash) {
               let createUser = mysql.format(
                 "INSERT INTO users (usernameuser, emailuser, passworduser) VALUES (?,?,?)",
                 [username, email, hash]
@@ -89,15 +102,21 @@ router.post(
               con.query(createUser, (err1, result1) => {
                 // error creating new user
                 if (err1) {
+                  //
+                  //  Response // error creating new user
+                  //
                   res.json({
                     err: true,
-                    msg: err1,
+                    msg: "Connectivity Issue ERR - 101 " + err,
                   });
                 } else {
                   // User created successfully
+                  //
+                  //  Response // USER CREATED successfully
+                  //
                   res.json({
-                    msg: "User Created Successfully  :smiley:",
-                    data: user,
+                    err: false,
+                    msg: user,
                   });
                 }
               });

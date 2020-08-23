@@ -1,7 +1,9 @@
 const app = require("express")();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+require("dotenv").config();
+const verifyToken = require("./api/authRoutes/checkAuth");
+const verifyHeaders = require("./api/authRoutes/checkHeaders");
 const fetchUser = require("./api/fetchUser.js");
 const pingStats = require("./api/stats");
 
@@ -26,31 +28,31 @@ app.use(cors());
 // Fetch user social and Private profiles
 // Social profile :             /:username
 // Private profile :            /:username/:privateKey
-app.use("/user", fetchUser);
+app.use("/user", verifyHeaders, fetchUser);
 
 // Ping / Update user stats
 // Ping Users stats             /pingstats
-app.use("/api", pingStats);
+app.use("/api", verifyHeaders, pingStats);
 
 // ------------
 // Auth Routes
 // ------------
 
 // Login user                   /login
-app.use("/api", login);
+app.use("/api", verifyHeaders, login);
 
 // Signup user                  /signup
-app.use("/api", signup);
+app.use("/api", verifyHeaders, signup);
 
 // Fetch Logged in users stats  /statistics
-app.use("/api", statistics);
+app.use("/api", verifyHeaders, verifyToken, statistics);
 
 //
 //
 //  TEST
 //
 //
-app.use("/test", test);
+app.use("/test", verifyHeaders, test);
 //
 //
 //  TEST
@@ -60,12 +62,12 @@ app.use("/test", test);
 // Add / Update Loggedin user
 // Add User Data                /add_data
 // Update User Data             /update_data
-app.use("/api", add_update_user);
+app.use("/api", verifyHeaders, add_update_user);
 
 app.get("/", (req, res) => {
   res.send("How u doin");
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("App Up and Running");
 });
