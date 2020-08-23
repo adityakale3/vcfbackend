@@ -12,3 +12,5 @@ ERR - 504 : Fetch Bank                | error connecting database for fetching B
 //  add_update_user.js
 ERR - 600 : Check User Personal       | error connecting database for Updating personal Data post login
 ERR - 601 : Update User Personal      | error Updating personal Data post login
+ERR - 602 : Check User Contact        | error connecting database for Updating Contact Data post login
+ERR - 603 : Update User Contact       | error Updating contact Data post login

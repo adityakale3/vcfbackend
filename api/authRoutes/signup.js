@@ -32,8 +32,8 @@ router.post(
       .isEmpty()
       .isLength({ min: 8, max: 50 })
       .withMessage("Password Legth must be Between 8 - 50")
-      .custom((val, { req, loc, path }) => {
-        if (val !== req.body.cpassword) {
+      .custom((val1, { req, loc, path }) => {
+        if (val1 !== req.body.cpassword) {
           throw new Error("Passwords don't match");
         } else {
           return true;
