@@ -14,6 +14,8 @@ const login = require("./api/authRoutes/login");
 const signup = require("./api/authRoutes/signup");
 const statistics = require("./api/authRoutes/statistics");
 const add_update_user = require("./api/authRoutes/add_update_user");
+const user_check_basics = require("./api/authRoutes/user_check_basics");
+const fetch_user_data = require("./api/authRoutes/fetch_user_data");
 
 // Config BodyParser
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -62,7 +64,13 @@ app.use("/test", verifyHeaders, test);
 // Add / Update Loggedin user
 // Add User Data                /add_data
 // Update User Data             /update_data
-app.use("/api", verifyHeaders, add_update_user);
+app.use("/api", verifyHeaders, verifyToken, add_update_user);
+
+// Post login Check basic info
+app.use("/api", verifyHeaders, verifyToken, user_check_basics);
+
+// Post login Check basic info
+app.use("/api", verifyHeaders, verifyToken, fetch_user_data);
 
 app.get("/", (req, res) => {
   res.send("How u doin");

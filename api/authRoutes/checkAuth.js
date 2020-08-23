@@ -12,6 +12,7 @@ var verifyToken = async (req, res, next) => {
     }
     console.log("Env secret", process.env.JWT_SECRET);
     const decrypt = await jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Dcrypt ", decrypt);
     req.user = {
       name: decrypt.name,
       userID: decrypt.userID,

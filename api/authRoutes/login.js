@@ -63,15 +63,22 @@ router.post(
                 console.log("Bycrypt password check result", result);
                 // Genrate Token JWT Token for 1hr
                 if (result) {
-                  var token = jwt.sign(
-                    { userID: dbData[0].ID, name: dbData[0].usernameuser },
-                    process.env.JWT_SECRET,
-                    { expiresIn: "1h" }
-                  );
-                  //
-                  //  Response // Logged In successfully
-                  //
-                  res.json({ err: false, msg: token });
+                  if (dbData[0].isActive) {
+                    var token = jwt.sign(
+                      { userID: dbData[0].ID, name: dbData[0].usernameuser },
+                      process.env.JWT_SECRET,
+                      { expiresIn: "1h" }
+                    );
+                    //
+                    //  Response // Logged In successfully
+                    //
+                    res.json({ err: false, msg: token });
+                  } else {
+                    //
+                    //  Response // InActive User
+                    //
+                    res.json({ err: true, msg: "User Deactivated" });
+                  }
                 } else {
                   //
                   //  Response // Logged In successfully

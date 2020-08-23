@@ -1,3 +1,14 @@
-ERR - 100 : Signup | error connecting database for checking of user existance
-ERR - 101 : Signup | error connecting database for creating new user
-ERR - 200 : Login  | error connecting database for creating new user
+ERR - 100 : Signup                    | error connecting database for checking of user existance
+ERR - 101 : Signup                    | error connecting database for creating new user
+ERR - 200 : Login                     | error connecting database for fetching user
+
+// fetch_user_data.js
+ERR - 500 : Fetch Personal            | error connecting database for fetching personal Data post login
+ERR - 501 : Fetch Contact             | error connecting database for fetching Contact Data post login
+ERR - 502 : Fetch Social              | error connecting database for fetching Social Data post login
+ERR - 503 : Fetch UPI                 | error connecting database for fetching UPI Data post login
+ERR - 504 : Fetch Bank                | error connecting database for fetching Bank Data post login
+
+//  add_update_user.js
+ERR - 600 : Check User Personal       | error connecting database for Updating personal Data post login
+ERR - 601 : Update User Personal      | error Updating personal Data post login

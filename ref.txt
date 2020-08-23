@@ -1,54 +1,77 @@
-Body Parser
+Note
 
-const bodyParser = require('body-parser');
+// ALL Routes accept special headers
 
+Routes
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
-app.use(bodyParser.json());
+/login  (login.js)              : POST | Expected email,password                       | Returns JWT Token
+/signup (signup.js)             : POST | Expectes username, email, password, cpassword | Returns success msg
 
+// Fetch Preview                : Get  | Private Key or username                       | Returns Data as per requirements
 
-app.post('/',urlencodedParser, (req,res) => {
-    console.log('Data on Post : '+ req.body.name);
-    res.status(200).send({"Name" : req.body.name});
-});
-
-
-=========================================================================
-Mysql
+// Update Stats
+/update/stats                   : POST | userID, activity  (Updates 2 tables)          | Success Msg          
 
 
-var mysql= require('mysql');
+======================================================================================================================
 
-var con=mysql.createConnection({
-    host: "localhost",
-  user: "root",
-  password: "",
-  database: "employee"
+Auth Routes
+/check_basic   (user_check_basics.js)       : POST | Expected Token, userID                 | Returns status of Profile, Phone, EmailVerification
+/check_data    (user_check_basics.js)       : POST | Expected Token, userID                 | Returns status of Personal, Social, Bank Status
 
-});
+// Fetch Data for Edit | POST Login
 
-con.connect(function(err){
-if(err) throw err;
-console.log('database connected successfully');
-});
-
-
-MySql Read
-
-var getQuery="select * from `users`";
-    con.query(getQuery,function(err,result){   
-       if(err) throw err;
-       res.render('index', { title: 'Employee Records', records:result,success:'' });    
-    });
+/fetch_user_personal (fetch_user_data.js)   : POST | Expected Token, userID                 | Returns Personal Data 
+/fetch_user_contact (fetch_user_data.js)    : POST | Expected Token, userID                 | Returns Contact Data 
+/fetch_user_social (fetch_user_data.js)     : POST | Expected Token, userID                 | Returns Social Data 
+/fetch_user_upi (fetch_user_data.js)        : POST | Expected Token, userID                 | Returns UPI Data 
+/fetch_user_bank (fetch_user_data.js)       : POST | Expected Token, userID                 | Returns Bank Data 
 
 
-MySql Add Data
+// Update Data in Update | POST Login
 
-  var insertQuery='insert into `users` (`name`,`email`,`etype`,`hourlyrate`,`totalhour`,`total`) VALUES (?,?,?,?,?,?)';
-  var query=mysql.format(insertQuery,[name,email,etype,hourlyrate,totalHour,total]);
-  con.query(query,function(err,response){
-      if(err) throw err;
-     // console.log(response.insertId);
+/update_personal (add_update_user.js)       : POST | Expected Token, userID, Personal Data  | Returns Success Msg 
+/update_contact  (add_update_user.js)       : POST | Expected Token, userID, Contact Data   | Returns Success Msg 
+/update_social   (add_update_user.js)       : POST | Expected Token, userID, Socail Data    | Returns Success Msg 
+/update_upi      (add_update_user.js)       : POST | Expected Token, userID, UPI Data       | Returns Success Msg 
+/update_bank     (add_update_user.js)       : POST | Expected Token, userID, Bank Data      | Returns Success Msg 
+
+// Token Expired Error | Status : 500
+"TokenExpiredError: jwt expired"  
+
+// All auth routes require JWT Token in headers
+
+/ Add_update_user     : POST | userID , data | Returns success msg
+/ statistics          : POST | userID        | Returns Data 
+
+======================================================================================================================
+
+Home : 
+
+Name, Title, Profile Img, username
+phone, email, bank, address, Private key
+Social with links
 
 
-});
+Stats : 
+Total Views, today, downloads, share
+
+
+Add / Update : 
+// Fetch :  Basic | Social | Payments
+// POST  :  Basic | Social | Payments
+
+
+======================================================================================================================
+User SignUp 
+    |
+User login
+    |
+If User Profile / Phone / EmailVerification Pending : DO IT 
+Check User fill status
+    |
+Fill Data all : Social : Personal (No Share unless profile complete)
+    |
+Share : (Updating stats starts)
+    
+    
