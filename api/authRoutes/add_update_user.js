@@ -561,7 +561,7 @@ router.post(
       } = socialData;
 
       const userID = req.user.userID;
-      let checkUserSocial = "SELECT userID FROM datacontact WHERE userID = ?";
+      let checkUserSocial = "SELECT userID FROM datasocial WHERE userID = ?";
       var query = mysql.format(checkUserSocial, [userID]);
       con.query(query, function (err, dbData) {
         if (err) {
@@ -611,6 +611,93 @@ router.post(
               res.json({
                 err: true,
                 msg: "Connectivity Issue ERR - 605 ",
+              });
+            } else {
+              console.log(dbStatus);
+              if (dbStatus.affectedRows === 1 || dbStatus.changedRows === 1) {
+                //
+                //  Response // Send Status of Update / Add Social Data
+                //
+                res.json({
+                  err: false,
+                  msg: dbStatus,
+                });
+              }
+            }
+          });
+        }
+      });
+    }
+  }
+);
+
+//
+//
+// UPI Data Storing
+//
+//
+router.post(
+  "/update_upi",
+  [
+    // Check UPI for Validating | max 100
+    body("upi")
+      .trim()
+      .isLength({ max: 100 })
+      .withMessage("Length must max 100")
+      .optional({ checkFalsy: true })
+      .custom((val, { req, loc, path }) => {
+        if (/^\w+@\w+$/.test(req.body.upi)) {
+          throw new Error("Not a valid UPI");
+        } else {
+          return true;
+        }
+      }),
+  ],
+  (req, res) => {
+    const userID = req.user.userID;
+    // get Validator errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      //
+      //  Response input values error
+      //
+      res.json({
+        err: true,
+        msg: errors.mapped(),
+      });
+    } else {
+      // Get sanitized user Data into variables
+      const upiAll = matchedData(req);
+      const { upi } = upiAll;
+      // Verify User exist in DB
+      let checkUserinDB = mysql.format(
+        "SELECT userID FROM dataupi WHERE userID = ?",
+        [userID]
+      );
+
+      con.query(checkUserinDB, (err, result) => {
+        if (err) {
+          //
+          //  Response // error checking user in db
+          //
+          res.json({ err: true, msg: "Connectivity Issue ERR - 606" });
+        } else {
+          if (result.length) {
+            var user_upi = "UPDATE dataupi SET upi = ?, WHERE userID = ?";
+          } else {
+            var user_upi = "UPDATE dataupi SET upi = ?, WHERE userID = ?";
+          }
+
+          var finalQuery = mysql.format(user_upi, [upi, userID]);
+
+          con.query(finalQuery, function (err1, dbStatus) {
+            if (err1) {
+              //
+              //  Response // error Adding / Updating user Social Data in db
+              //
+              res.json({
+                err: true,
+                msg: "Connectivity Issue ERR - 607 ",
               });
             } else {
               console.log(dbStatus);

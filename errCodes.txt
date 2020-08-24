@@ -16,3 +16,5 @@ ERR - 602 : Check User Contact        | error connecting database for Updating C
 ERR - 603 : Update User Contact       | error Updating Contact Data post login
 ERR - 604 : Check User Social         | error connecting database for Updating Social Data post login
 ERR - 605 : Update User Social        | error Updating Social Data post login
+ERR - 606 : Check User UPI            | error connecting database for Updating UPI Data post login
+ERR - 607 : Update User UPI           | error Updating UPI Data post login
