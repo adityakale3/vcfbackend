@@ -685,7 +685,7 @@ router.post(
           if (result.length) {
             var user_upi = "UPDATE dataupi SET upi = ?, WHERE userID = ?";
           } else {
-            var user_upi = "UPDATE dataupi SET upi = ?, WHERE userID = ?";
+            var user_upi = "INSERT INTO dataupi ( upi, userID ) VALUES (?,?)";
           }
 
           var finalQuery = mysql.format(user_upi, [upi, userID]);
@@ -693,11 +693,131 @@ router.post(
           con.query(finalQuery, function (err1, dbStatus) {
             if (err1) {
               //
-              //  Response // error Adding / Updating user Social Data in db
+              //  Response // error Adding / Updating user UPI Data in db
               //
               res.json({
                 err: true,
                 msg: "Connectivity Issue ERR - 607 ",
+              });
+            } else {
+              console.log(dbStatus);
+              if (dbStatus.affectedRows === 1 || dbStatus.changedRows === 1) {
+                //
+                //  Response // Send Status of Update / Add UPI Data
+                //
+                res.json({
+                  err: false,
+                  msg: dbStatus,
+                });
+              }
+            }
+          });
+        }
+      });
+    }
+  }
+);
+
+//
+//
+// Bank Data Storing
+//
+//
+router.post(
+  "/update_bank",
+  [
+    // Check Bank Name for Validating Limit | max 100 | Alpha
+    body("bankname")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Bank Name is required")
+      .isLength({ max: 100 })
+      .withMessage("Length must max 100")
+      .isAlpha()
+      .withMessage("Invalid Bank Name"),
+    // Check Bank Account for Validating Limit | max 18 | Numeric
+    body("bankaccount")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Bank Account Number is required")
+      .isLength({ max: 18 })
+      .withMessage("Length must max 18")
+      .isInt()
+      .withMessage("Invalid Bank Account Number"),
+    // Check Bank IFSC for Validating Limit | max 11 | Aplha Numeric
+    body("ifsc")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("IFSC Code is required")
+      .isLength({ max: 11 })
+      .withMessage("Length must max 11")
+      .isAlphanumeric()
+      .withMessage("Invalid IFSC Code"),
+    // Check  Branch Name for Validating Limit | max 100 | Aplha Numeric
+    body("branch")
+      .trim()
+      .isLength({ max: 100 })
+      .withMessage("Length must max 100")
+      .optional({ checkFalsy: true })
+      .isAlphanumeric()
+      .withMessage("No Special Characters allowed"),
+  ],
+  (req, res) => {
+    const userID = req.user.userID;
+    // get Validator errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      //
+      //  Response input values error
+      //
+      res.json({
+        err: true,
+        msg: errors.mapped(),
+      });
+    } else {
+      // Get sanitized Bank Data into variables
+      const bankAll = matchedData(req);
+      const { bankname, bankaccount, ifsc, branch } = bankAll;
+      // Verify User exist in DB
+      let checkUserinDB = mysql.format(
+        "SELECT bankaccount FROM databank WHERE bankaccount = ? ",
+        [bankaccount]
+      );
+
+      con.query(checkUserinDB, (err, result) => {
+        if (err) {
+          //
+          //  Response // error checking user in db
+          //
+          res.json({ err: true, msg: "Connectivity Issue ERR - 608" });
+        } else {
+          if (result.length) {
+            var user_bank =
+              "UPDATE databank SET bankname = ?, bankaccount = ?, ifsc = ?, branch = ? WHERE userID = ?";
+          } else {
+            var user_bank =
+              "INSERT databank (`bankname`, `bankaccount`, `ifsc`, `branch`, `userID`) VALUES (?,?,?,?,?)";
+          }
+
+          var finalQuery = mysql.format(user_bank, [
+            bankname,
+            bankaccount,
+            ifsc,
+            branch,
+            userID,
+          ]);
+
+          con.query(finalQuery, function (err1, dbStatus) {
+            if (err1) {
+              //
+              //  Response // error Adding / Updating user Bank Data in db
+              //
+              res.json({
+                err: true,
+                msg: "Connectivity Issue ERR - 609 ",
               });
             } else {
               console.log(dbStatus);

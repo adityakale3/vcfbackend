@@ -18,3 +18,5 @@ ERR - 604 : Check User Social         | error connecting database for Updating S
 ERR - 605 : Update User Social        | error Updating Social Data post login
 ERR - 606 : Check User UPI            | error connecting database for Updating UPI Data post login
 ERR - 607 : Update User UPI           | error Updating UPI Data post login
+ERR - 608 : Check User Bank           | error connecting database for Updating Bank Data post login
+ERR - 609 : Update User Bank          | error Updating Bank Data post login
