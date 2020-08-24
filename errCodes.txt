@@ -13,4 +13,6 @@ ERR - 504 : Fetch Bank                | error connecting database for fetching B
 ERR - 600 : Check User Personal       | error connecting database for Updating personal Data post login
 ERR - 601 : Update User Personal      | error Updating personal Data post login
 ERR - 602 : Check User Contact        | error connecting database for Updating Contact Data post login
-ERR - 603 : Update User Contact       | error Updating contact Data post login
+ERR - 603 : Update User Contact       | error Updating Contact Data post login
+ERR - 604 : Check User Social         | error connecting database for Updating Social Data post login
+ERR - 605 : Update User Social        | error Updating Social Data post login

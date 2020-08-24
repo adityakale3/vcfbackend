@@ -32,8 +32,8 @@ Auth Routes
 
 /update_personal (add_update_user.js)       : POST | Expected Token, userID, Personal Data  | Returns Success Msg 
 /update_contact  (add_update_user.js)       : POST | Expected Token, userID, Contact Data   | Returns Success Msg 
-Done
 /update_social   (add_update_user.js)       : POST | Expected Token, userID, Socail Data    | Returns Success Msg 
+Done
 /update_upi      (add_update_user.js)       : POST | Expected Token, userID, UPI Data       | Returns Success Msg 
 /update_bank     (add_update_user.js)       : POST | Expected Token, userID, Bank Data      | Returns Success Msg 
 

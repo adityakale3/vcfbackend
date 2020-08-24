@@ -156,7 +156,7 @@ router.post(
     // Check workphone for not empty | max 20
     body("workphone")
       .trim()
-      .optional()
+      .optional({ checkFalsy: true })
       .isLength({ min: 10, max: 15 })
       .withMessage("Work Phone Length must be between 10 - 15")
       .isMobilePhone("en-IN")
@@ -182,7 +182,7 @@ router.post(
     // Check workEmail | less than 100
     body("workemail")
       .trim()
-      .optional()
+      .optional({ checkFalsy: true })
       .isEmail()
       .optional({ checkFalsy: true })
       .isLength({ max: 100 })
@@ -191,7 +191,7 @@ router.post(
     // Check Email | less than 100
     body("email")
       .trim()
-      .optional()
+      .optional({ checkFalsy: true })
       .isEmail()
       .optional({ checkFalsy: true })
       .isLength({ max: 100 })
@@ -200,7 +200,7 @@ router.post(
     // Check Website not empty | less than 100
     body("website")
       .trim()
-      .optional()
+      .optional({ checkFalsy: true })
       .isURL()
       .withMessage("Invalid Website Address")
       .optional({ checkFalsy: true })
@@ -210,14 +210,14 @@ router.post(
     // Check Personal Address not empty | less than 200
     body("personaladdress")
       .trim()
-      .optional()
+      .optional({ checkFalsy: true })
       .isLength({ max: 200 })
       .withMessage("Personal Address must be less than 200")
       .optional({ checkFalsy: true }),
     // Check Work Address not empty | less than 200
     body("workaddress")
       .trim()
-      .optional()
+      .optional({ checkFalsy: true })
       .isLength({ max: 200 })
       .withMessage("Work Address must be less than 200")
       .optional({ checkFalsy: true }),
@@ -233,7 +233,7 @@ router.post(
     // Check Work Contact Whatsapp | less than 2
     body("workwa")
       .trim()
-      .optional()
+      .optional({ checkFalsy: true })
       .isInt()
       .isLength({ max: 2 })
       .withMessage("Whatsapp status for Work Contact is Invalid")
@@ -350,6 +350,273 @@ router.post(
               if (dbStatus.affectedRows === 1 || dbStatus.changedRows === 1) {
                 //
                 //  Response // Send Status of Update / Add Contact Data
+                //
+                res.json({
+                  err: false,
+                  msg: dbStatus,
+                });
+              }
+            }
+          });
+        }
+      });
+    }
+  }
+);
+
+//
+//
+// UPDATE Social Details
+//
+//
+router.post(
+  "/update_social",
+  [
+    // Check facebook for URL | max 120
+    body("facebook")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check twitter for URL | max 120
+    body("twitter")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check instagram for URL | max 120
+    body("instagram")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check linkedin for URL | max 120
+    body("linkedin")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check youtube for URL | max 150
+    body("youtube")
+      .trim()
+      .isLength({ max: 150 })
+      .withMessage("Length must max 150")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check telegram for URL | max 100
+    body("telegram")
+      .trim()
+      .isLength({ max: 100 })
+      .withMessage("Length must max 100")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check github for URL | max 120
+    body("github")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check slack for URL | max 120
+    body("slack")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check discord for URL | max 120
+    body("discord")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check snapchat for URL | max 120
+    body("snapchat")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check personalweb1 for URL | max 120
+    body("personalweb1")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check personalweb2 for URL | max 120
+    body("personalweb2")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+    // Check personalweb3 for URL | max 120
+    body("personalweb3")
+      .trim()
+      .isLength({ max: 120 })
+      .withMessage("Length must max 120")
+      .optional({ checkFalsy: true })
+      .isURL()
+      .withMessage("Invalid URL")
+      .optional({ checkFalsy: true }),
+
+    // Check namepersonalweb1 for max 50
+    body("namepersonalweb1")
+      .trim()
+      .isLength({ max: 50 })
+      .withMessage("Length must max 50")
+      .optional({ checkFalsy: true }),
+    // Check namepersonalweb2 for max 50
+    body("namepersonalweb2")
+      .trim()
+      .isLength({ max: 50 })
+      .withMessage("Length must max 50")
+      .optional({ checkFalsy: true }),
+    // Check namepersonalweb3 for max 50
+    body("namepersonalweb3")
+      .trim()
+      .isLength({ max: 50 })
+      .withMessage("Length must max 50")
+      .optional({ checkFalsy: true }),
+
+    // Check pubgm for URL | max 15
+    body("pubgm")
+      .trim()
+      .isLength({ max: 15 })
+      .withMessage("Length must max 15")
+      .optional({ checkFalsy: true })
+      .isInt()
+      .withMessage("Invalid PUBG ID"),
+    // Check pubgname for URL | max 30
+    body("pubgname")
+      .trim()
+      .isLength({ max: 30 })
+      .withMessage("Length must max 30")
+      .optional({ checkFalsy: true }),
+  ],
+  (req, res) => {
+    // get Validator errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      //
+      //  Response input values error
+      //
+      res.json({
+        err: true,
+        msg: errors.mapped(),
+      });
+    } else {
+      // Get sanitized user Social Data into variables
+      const socialData = matchedData(req);
+      // console.log("All Data Update", socialData);
+      const {
+        facebook,
+        twitter,
+        instagram,
+        linkedin,
+        youtube,
+        telegram,
+        github,
+        slack,
+        discord,
+        snapchat,
+        pubgm,
+        pubgmname,
+        personalweb1,
+        namepersonalweb1,
+        personalweb2,
+        namepersonalweb2,
+        personalweb3,
+        namepersonalweb3,
+      } = socialData;
+
+      const userID = req.user.userID;
+      let checkUserSocial = "SELECT userID FROM datacontact WHERE userID = ?";
+      var query = mysql.format(checkUserSocial, [userID]);
+      con.query(query, function (err, dbData) {
+        if (err) {
+          //
+          //  Response // error checking user in db
+          //
+          res.json({
+            err: true,
+            msg: "Connectivity Issue ERR - 604 ",
+          });
+        } else {
+          if (dbData.length > 0) {
+            var user_social =
+              "UPDATE datasocial SET facebook = ?, twitter = ?, instagram = ?, linkedin = ?, youtube = ?, telegram = ?, github = ?, slack = ?, discord = ?, snapchat = ?, pubgm = ?, pubgmname = ?, personalweb1 = ?, namepersonalweb1 = ?, personalweb2 = ?, namepersonalweb2 = ?, personalweb3 = ?, namepersonalweb3 = ?  WHERE userID = ?";
+          } else {
+            var user_social =
+              "INSERT INTO datasocial `datasocial`(`facebook`, `twitter`, `instagram`, `linkedin`, `youtube`, `telegram`, `github`, `slack`, `discord`, `snapchat`, `pubgm`, `pubgmname`, `personalweb1`, `namepersonalweb1`, `personalweb2`, `namepersonalweb2`, `personalweb3`, `namepersonalweb3`,`userID`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+          }
+
+          var finalQuery = mysql.format(user_social, [
+            facebook,
+            twitter,
+            instagram,
+            linkedin,
+            youtube,
+            telegram,
+            github,
+            slack,
+            discord,
+            snapchat,
+            pubgm,
+            pubgmname,
+            personalweb1,
+            namepersonalweb1,
+            personalweb2,
+            namepersonalweb2,
+            personalweb3,
+            namepersonalweb3,
+            userID,
+          ]);
+
+          con.query(finalQuery, function (err1, dbStatus) {
+            if (err1) {
+              //
+              //  Response // error Adding / Updating user Social Data in db
+              //
+              res.json({
+                err: true,
+                msg: "Connectivity Issue ERR - 605 ",
+              });
+            } else {
+              console.log(dbStatus);
+              if (dbStatus.affectedRows === 1 || dbStatus.changedRows === 1) {
+                //
+                //  Response // Send Status of Update / Add Social Data
                 //
                 res.json({
                   err: false,
